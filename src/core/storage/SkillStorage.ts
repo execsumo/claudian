@@ -17,30 +17,32 @@ export class SkillStorage {
     const loadedNames = new Set<string>();
 
     try {
-      const folders = await this.adapter.listFolders(SKILLS_PATH);
+      if (await this.adapter.exists(SKILLS_PATH)) {
+        const folders = await this.adapter.listFolders(SKILLS_PATH);
 
-      for (const folder of folders) {
-        const skillName = folder.split('/').pop()!;
-        const skillPath = `${SKILLS_PATH}/${skillName}/SKILL.md`;
+        for (const folder of folders) {
+          const skillName = folder.split('/').pop()!;
+          const skillPath = `${SKILLS_PATH}/${skillName}/SKILL.md`;
 
-        try {
-          if (!(await this.adapter.exists(skillPath))) continue;
+          try {
+            if (!(await this.adapter.exists(skillPath))) continue;
 
-          const content = await this.adapter.read(skillPath);
-          const parsed = parseSlashCommandContent(content);
+            const content = await this.adapter.read(skillPath);
+            const parsed = parseSlashCommandContent(content);
 
-          skills.push(parsedToSlashCommand(parsed, {
-            id: `skill-${skillName}`,
-            name: skillName,
-            source: 'user',
-          }));
-          loadedNames.add(skillName);
-        } catch {
-          // Non-critical: skip malformed skill files
+            skills.push(parsedToSlashCommand(parsed, {
+              id: `skill-${skillName}`,
+              name: skillName,
+              source: 'user',
+            }));
+            loadedNames.add(skillName);
+          } catch {
+            // Non-critical: skip malformed skill files
+          }
         }
       }
     } catch {
-      return skills;
+      // Non-critical: skip vault skills if directory missing or inaccessible
     }
 
     // Also load user-level skills from ~/.claude/skills (global Claude Code skills).
