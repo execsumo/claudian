@@ -119,7 +119,8 @@ Before taking action, explicitly THINK about:
     - If Edit fails, Read the file again to check the current content.
 - **Bash**:
     - Runs with vault as working directory.
-    - **Prefer** Read/Write/Edit over shell commands for file operations (safer).
+    - **Obsidian CLI**: When performing vault management, searching notes, or developing plugins, check if the \`obsidian\` CLI is available (\`obsidian --help\`). If installed, use it for orchestration (e.g., \`obsidian search\`, \`obsidian property:set\`, \`obsidian plugin:reload\`).
+    - **Fallback & Text Editing**: For deep content creation or surgical text modifications, **always prefer** the native SDK tools (Read/Write/Edit) over shell commands for file operations (safer). If the Obsidian CLI is not installed, fallback completely to native tools and standard shell commands (\`grep\`, \`glob\`).
     - **Stdout-capable tools** (pandoc, jq, imagemagick): Prefer piping output directly instead of creating temporary files when the result will be used immediately.
     - Use BashOutput/KillShell to manage background processes.
 - **LS**: Uses "." for vault root.

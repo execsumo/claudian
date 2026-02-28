@@ -42,7 +42,7 @@ export class McpStorage {
   constructor(private adapter: VaultFileAdapter) { }
 
   async load(): Promise<ClaudianMcpServer[]> {
-    let vaultServers: ClaudianMcpServer[] = [];
+    const vaultServers: ClaudianMcpServer[] = [];
 
     try {
       if (!(await this.adapter.exists(MCP_CONFIG_PATH))) {
